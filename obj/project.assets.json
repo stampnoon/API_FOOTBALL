@@ -259,11 +259,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Ionic Project\\Football_API\\Football_API.csproj",
+      "projectUniqueName": "E:\\Ionic Project\\Football_API\\API_FOOTBALL\\Football_API.csproj",
       "projectName": "Football_API",
-      "projectPath": "E:\\Ionic Project\\Football_API\\Football_API.csproj",
+      "projectPath": "E:\\Ionic Project\\Football_API\\API_FOOTBALL\\Football_API.csproj",
       "packagesPath": "C:\\Users\\oThStaMpo\\.nuget\\packages\\",
-      "outputPath": "E:\\Ionic Project\\Football_API\\obj\\",
+      "outputPath": "E:\\Ionic Project\\Football_API\\API_FOOTBALL\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

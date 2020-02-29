@@ -84,7 +84,7 @@ namespace FootballAPI.Controllers
                     ListLeagueFixOdds.Add(item);
                 }
             }
-            return ListLeagueFixOdds;
+            return ListLeagueFixOdds.OrderBy(c=>c.EventDate).ToList();
         }
 
         [HttpGet]
