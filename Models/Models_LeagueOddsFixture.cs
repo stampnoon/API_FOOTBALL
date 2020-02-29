@@ -3,6 +3,12 @@ using System.Collections.Generic;
 
 namespace Football_API.Models
 {
+    public class List_LeagueOddsFixture
+    {
+        public string LeagueName { get; set; }
+        public List<LeagueOddsFixture> LeagueOddsFixture { get; set; }
+    }
+
     public class LeagueOddsFixture
     {
         public string LeagueName { get; set; }
