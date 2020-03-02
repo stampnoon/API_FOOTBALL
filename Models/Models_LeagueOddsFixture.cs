@@ -5,12 +5,14 @@ namespace Football_API.Models
 {
     public class List_LeagueOddsFixture
     {
+        public string LeagueID { get; set; }
         public string LeagueName { get; set; }
         public List<LeagueOddsFixture> LeagueOddsFixture { get; set; }
     }
 
     public class LeagueOddsFixture
     {
+        public string LeagueID { get; set; }
         public string LeagueName { get; set; }
         public string LeagueCountry { get; set; }
         public string LeagueLogo { get; set; }

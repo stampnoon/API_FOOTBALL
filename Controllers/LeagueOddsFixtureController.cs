@@ -44,55 +44,58 @@ namespace FootballAPI.Controllers
             {
                 ListOdds = APIJsonObjectOdds[0].api.odds; //Json ก้อนใหญ่มีก้อนเดียวเสมอ
             }
-
-            //====== Match FixtureID between "Fixture" & "Odds" =======
-            foreach (var eachfixture in ListFixture)
+            if (ListFixture.Count != 0)
             {
-                //หาตัวที่มี FixtureID เดียวกัน
-                var OddsMatch = ListOdds.FirstOrDefault(it => it.fixture.fixture_id == eachfixture.fixture_id);
-                if (OddsMatch != null)
+                //====== Match FixtureID between "Fixture" & "Odds" =======
+                foreach (var eachfixture in ListFixture)
                 {
-                    var oddHome = OddsMatch.bookmakers[0].bets[0].values.FirstOrDefault(it2 => it2.value == "Home");
-                    var oddDraw = OddsMatch.bookmakers[0].bets[0].values.FirstOrDefault(it2 => it2.value == "Draw");
-                    var oddAway = OddsMatch.bookmakers[0].bets[0].values.FirstOrDefault(it2 => it2.value == "Away");
-                    double perHome = (Convert.ToDouble(oddAway.odd) * 100) / (Convert.ToDouble(oddHome.odd) + Convert.ToDouble(oddDraw.odd) + Convert.ToDouble(oddAway.odd));
-                    double perDraw = (Convert.ToDouble(oddDraw.odd) * 100) / (Convert.ToDouble(oddHome.odd) + Convert.ToDouble(oddDraw.odd) + Convert.ToDouble(oddAway.odd));
-                    double perAway = (Convert.ToDouble(oddHome.odd) * 100) / (Convert.ToDouble(oddHome.odd) + Convert.ToDouble(oddDraw.odd) + Convert.ToDouble(oddAway.odd));
-
-                    var item = new LeagueOddsFixture
+                    //หาตัวที่มี FixtureID เดียวกัน
+                    var OddsMatch = ListOdds.FirstOrDefault(it => it.fixture.fixture_id == eachfixture.fixture_id);
+                    if (OddsMatch != null)
                     {
-                        LeagueName = eachfixture.league.name,
-                        LeagueCountry = eachfixture.league.country,
-                        LeagueLogo = eachfixture.league.logo,
-                        LeagueFlag = eachfixture.league.flag,
-                        EventDate = eachfixture.event_date,
-                        MatchStatus = eachfixture.status,
-                        HometeamName = eachfixture.homeTeam.team_name,
-                        HometeamLogo = eachfixture.homeTeam.logo,
-                        HometeamScore = eachfixture.goalsHomeTeam,
-                        AwayteamName = eachfixture.awayTeam.team_name,
-                        AwayteamLogo = eachfixture.awayTeam.logo,
-                        AwayteamScore = eachfixture.goalsAwayTeam,
-                        OddsBookmaker = OddsMatch.bookmakers[0].bookmaker_name,
-                        OddsLabal = OddsMatch.bookmakers[0].bets[0].label_name,
-                        OddsHome = oddHome.odd,
-                        OddsDraw = oddDraw.odd,
-                        OddsAway = oddAway.odd,
-                        PerHome = perHome.ToString(),
-                        PerDraw = perDraw.ToString(),
-                        PerAway = perAway.ToString()
-                    };
-                    ListLeagueFixOdds.Add(item);
-                }
-            }
-            //Add into Return List
-            var item2 = new List_LeagueOddsFixture
-            {
-                LeagueName = ListLeagueFixOdds[0].LeagueName,
-                LeagueOddsFixture = ListLeagueFixOdds.OrderBy(c => c.EventDate).ToList()
-            };
-            Ret_LeagureOddsFixture.Add(item2);
+                        var oddHome = OddsMatch.bookmakers[0].bets[0].values.FirstOrDefault(it2 => it2.value == "Home");
+                        var oddDraw = OddsMatch.bookmakers[0].bets[0].values.FirstOrDefault(it2 => it2.value == "Draw");
+                        var oddAway = OddsMatch.bookmakers[0].bets[0].values.FirstOrDefault(it2 => it2.value == "Away");
+                        double perHome = (Convert.ToDouble(oddAway.odd) * 100) / (Convert.ToDouble(oddHome.odd) + Convert.ToDouble(oddDraw.odd) + Convert.ToDouble(oddAway.odd));
+                        double perDraw = (Convert.ToDouble(oddDraw.odd) * 100) / (Convert.ToDouble(oddHome.odd) + Convert.ToDouble(oddDraw.odd) + Convert.ToDouble(oddAway.odd));
+                        double perAway = (Convert.ToDouble(oddHome.odd) * 100) / (Convert.ToDouble(oddHome.odd) + Convert.ToDouble(oddDraw.odd) + Convert.ToDouble(oddAway.odd));
 
+                        var item = new LeagueOddsFixture
+                        {
+                            LeagueID = eachfixture.league_id.ToString(),
+                            LeagueName = eachfixture.league.name,
+                            LeagueCountry = eachfixture.league.country,
+                            LeagueLogo = eachfixture.league.logo,
+                            LeagueFlag = eachfixture.league.flag,
+                            EventDate = eachfixture.event_date,
+                            MatchStatus = eachfixture.status,
+                            HometeamName = eachfixture.homeTeam.team_name,
+                            HometeamLogo = eachfixture.homeTeam.logo,
+                            HometeamScore = eachfixture.goalsHomeTeam,
+                            AwayteamName = eachfixture.awayTeam.team_name,
+                            AwayteamLogo = eachfixture.awayTeam.logo,
+                            AwayteamScore = eachfixture.goalsAwayTeam,
+                            OddsBookmaker = OddsMatch.bookmakers[0].bookmaker_name,
+                            OddsLabal = OddsMatch.bookmakers[0].bets[0].label_name,
+                            OddsHome = oddHome.odd,
+                            OddsDraw = oddDraw.odd,
+                            OddsAway = oddAway.odd,
+                            PerHome = perHome.ToString(),
+                            PerDraw = perDraw.ToString(),
+                            PerAway = perAway.ToString()
+                        };
+                        ListLeagueFixOdds.Add(item);
+                    }
+                }
+                //Add into Return List
+                var item2 = new List_LeagueOddsFixture
+                {
+                    LeagueID = ListLeagueFixOdds[0].LeagueID,
+                    LeagueName = ListLeagueFixOdds[0].LeagueName,
+                    LeagueOddsFixture = ListLeagueFixOdds.OrderBy(c => c.EventDate).ToList()
+                };
+                Ret_LeagureOddsFixture.Add(item2);
+            }
             return Ret_LeagureOddsFixture;
         }
 
@@ -123,57 +126,62 @@ namespace FootballAPI.Controllers
                     ListOdds = APIJsonObjectOdds[0].api.odds; //Json ก้อนใหญ่มีก้อนเดียวเสมอ
                 }
 
-                //====== Match FixtureID between "Fixture" & "Odds" =======
-                foreach (var eachfixture in ListFixture)
+                if (ListFixture.Count != 0)
                 {
-                    //หาตัวที่มี FixtureID เดียวกัน
-                    var OddsMatch = ListOdds.FirstOrDefault(it => it.fixture.fixture_id == eachfixture.fixture_id);
-                    if (OddsMatch != null)
+                    foreach (var eachfixture in ListFixture)
                     {
-                        var oddHome = OddsMatch.bookmakers[0].bets[0].values.FirstOrDefault(it2 => it2.value == "Home");
-                        var oddDraw = OddsMatch.bookmakers[0].bets[0].values.FirstOrDefault(it2 => it2.value == "Draw");
-                        var oddAway = OddsMatch.bookmakers[0].bets[0].values.FirstOrDefault(it2 => it2.value == "Away");
-                        double perHome = (Convert.ToDouble(oddAway.odd) * 100) / (Convert.ToDouble(oddHome.odd) + Convert.ToDouble(oddDraw.odd) + Convert.ToDouble(oddAway.odd));
-                        double perDraw = (Convert.ToDouble(oddDraw.odd) * 100) / (Convert.ToDouble(oddHome.odd) + Convert.ToDouble(oddDraw.odd) + Convert.ToDouble(oddAway.odd));
-                        double perAway = (Convert.ToDouble(oddHome.odd) * 100) / (Convert.ToDouble(oddHome.odd) + Convert.ToDouble(oddDraw.odd) + Convert.ToDouble(oddAway.odd));
-
-                        var item = new LeagueOddsFixture
+                        //หาตัวที่มี FixtureID เดียวกัน
+                        var OddsMatch = ListOdds.FirstOrDefault(it => it.fixture.fixture_id == eachfixture.fixture_id);
+                        if (OddsMatch != null)
                         {
-                            LeagueName = eachfixture.league.name,
-                            LeagueCountry = eachfixture.league.country,
-                            LeagueLogo = eachfixture.league.logo,
-                            LeagueFlag = eachfixture.league.flag,
-                            EventDate = eachfixture.event_date,
-                            MatchStatus = eachfixture.status,
-                            HometeamName = eachfixture.homeTeam.team_name,
-                            HometeamLogo = eachfixture.homeTeam.logo,
-                            HometeamScore = eachfixture.goalsHomeTeam,
-                            AwayteamName = eachfixture.awayTeam.team_name,
-                            AwayteamLogo = eachfixture.awayTeam.logo,
-                            AwayteamScore = eachfixture.goalsAwayTeam,
-                            OddsBookmaker = OddsMatch.bookmakers[0].bookmaker_name,
-                            OddsLabal = OddsMatch.bookmakers[0].bets[0].label_name,
-                            OddsHome = oddHome.odd,
-                            OddsDraw = oddDraw.odd,
-                            OddsAway = oddAway.odd,
-                            PerHome = perHome.ToString(),
-                            PerDraw = perDraw.ToString(),
-                            PerAway = perAway.ToString()
-                        };
-                        ListLeagueFixOdds.Add(item);
+                            var oddHome = OddsMatch.bookmakers[0].bets[0].values.FirstOrDefault(it2 => it2.value == "Home");
+                            var oddDraw = OddsMatch.bookmakers[0].bets[0].values.FirstOrDefault(it2 => it2.value == "Draw");
+                            var oddAway = OddsMatch.bookmakers[0].bets[0].values.FirstOrDefault(it2 => it2.value == "Away");
+                            double perHome = (Convert.ToDouble(oddAway.odd) * 100) / (Convert.ToDouble(oddHome.odd) + Convert.ToDouble(oddDraw.odd) + Convert.ToDouble(oddAway.odd));
+                            double perDraw = (Convert.ToDouble(oddDraw.odd) * 100) / (Convert.ToDouble(oddHome.odd) + Convert.ToDouble(oddDraw.odd) + Convert.ToDouble(oddAway.odd));
+                            double perAway = (Convert.ToDouble(oddHome.odd) * 100) / (Convert.ToDouble(oddHome.odd) + Convert.ToDouble(oddDraw.odd) + Convert.ToDouble(oddAway.odd));
+
+                            var item = new LeagueOddsFixture
+                            {
+                                LeagueID = eachfixture.league_id.ToString(),
+                                LeagueName = eachfixture.league.name,
+                                LeagueCountry = eachfixture.league.country,
+                                LeagueLogo = eachfixture.league.logo,
+                                LeagueFlag = eachfixture.league.flag,
+                                EventDate = eachfixture.event_date,
+                                MatchStatus = eachfixture.status,
+                                HometeamName = eachfixture.homeTeam.team_name,
+                                HometeamLogo = eachfixture.homeTeam.logo,
+                                HometeamScore = eachfixture.goalsHomeTeam,
+                                AwayteamName = eachfixture.awayTeam.team_name,
+                                AwayteamLogo = eachfixture.awayTeam.logo,
+                                AwayteamScore = eachfixture.goalsAwayTeam,
+                                OddsBookmaker = OddsMatch.bookmakers[0].bookmaker_name,
+                                OddsLabal = OddsMatch.bookmakers[0].bets[0].label_name,
+                                OddsHome = oddHome.odd,
+                                OddsDraw = oddDraw.odd,
+                                OddsAway = oddAway.odd,
+                                PerHome = perHome.ToString(),
+                                PerDraw = perDraw.ToString(),
+                                PerAway = perAway.ToString()
+                            };
+                            ListLeagueFixOdds.Add(item);
+                        }
                     }
+                    //Add into Return List
+                    var item2 = new List_LeagueOddsFixture
+                    {
+                        LeagueID = ListLeagueFixOdds[0].LeagueID,
+                        LeagueName = ListLeagueFixOdds[0].LeagueName,
+                        LeagueOddsFixture = ListLeagueFixOdds.OrderBy(c => c.EventDate).ToList()
+                    };
+                    Ret_LeagureOddsFixture.Add(item2);
                 }
-                //Add into Return List
-                var item2 = new List_LeagueOddsFixture
-                {
-                    LeagueName = ListLeagueFixOdds[0].LeagueName,
-                    LeagueOddsFixture = ListLeagueFixOdds.OrderBy(c => c.EventDate).ToList()
-                };
-                Ret_LeagureOddsFixture.Add(item2);
             }
             return Ret_LeagureOddsFixture.OrderBy(c => c.LeagueName).ToList();
         }
 
+        #region Private Function
         [HttpGet]
         private string GetFixtureByLeagueID(string leagueID, string date)
         {
@@ -216,6 +224,6 @@ namespace FootballAPI.Controllers
             }
             return JsonStr;
         }
-
+        #endregion
     }
 }
