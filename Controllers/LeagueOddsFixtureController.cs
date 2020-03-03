@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 using System.Globalization;
 using Football_API.Models.Models_Fixture;
 using Football_API.Models.Models_Odds;
@@ -17,10 +16,11 @@ namespace FootballAPI.Controllers
 
     public class OddsController : ControllerBase
     {
-        private string KeyAPI = "90b616048dmsh3fb273edc577494p17d18fjsn910fdd366c9f";
+        API API = new API(); 
 
+        #region ================ Public Function ================
         [HttpGet("{leagueID}")]
-        public ActionResult<IEnumerable<List_LeagueOddsFixture>> GetOdds_SoccerByLeague(string leagueID)
+        public ActionResult<IEnumerable<List_LeagueOddsFixture>> GetOdds_SoccerByLeague_ThisDay(string leagueID)
         {
             string date = DateTime.Now.ToString("yyyy-MM-dd", new CultureInfo("en-US"));
             // Initial List 
@@ -100,7 +100,7 @@ namespace FootballAPI.Controllers
         }
 
         [HttpPost]
-        public ActionResult<IEnumerable<List_LeagueOddsFixture>> GetOdds_SoccerManyLeague([FromBody] string[] AllLeague)
+        public ActionResult<IEnumerable<List_LeagueOddsFixture>> GetOdds_SoccerManyLeague_ThisDay([FromBody] string[] AllLeague)
         {
             string date = DateTime.Now.ToString("yyyy-MM-dd", new CultureInfo("en-US"));
             List<List_LeagueOddsFixture> Ret_LeagureOddsFixture = new List<List_LeagueOddsFixture>();
@@ -180,50 +180,23 @@ namespace FootballAPI.Controllers
             }
             return Ret_LeagureOddsFixture.OrderBy(c => c.LeagueName).ToList();
         }
+        #endregion
 
-        #region Private Function
+        #region ================ Private Function ================
         [HttpGet]
         private string GetFixtureByLeagueID(string leagueID, string date)
         {
             string URL = "https://api-football-v1.p.rapidapi.com/v2/fixtures/league/" + leagueID + "/" + date;
-            var client = new RestClient(URL);
-            var request = new RestRequest(Method.GET);
-            request.AddHeader("x-rapidapi-host", "api-football-v1.p.rapidapi.com");
-            request.AddHeader("x-rapidapi-key", KeyAPI);
-            IRestResponse response = client.Execute(request);
-            string JsonStr = response.Content.ToString();
-            //ใส่ [] ครอบหน้าหลัง หากยังไม่มี 
-            if (!JsonStr.StartsWith("["))
-            {
-                JsonStr = "[" + JsonStr;
-            }
-            if (!JsonStr.EndsWith("]"))
-            {
-                JsonStr = JsonStr + "]";
-            }
-            return JsonStr;
+            return API.callAPIService(URL);
         }
 
         [HttpGet]
         private string GetOddByLeagueID(string leagueID)
         {
             string URL = "https://api-football-v1.p.rapidapi.com/v2/odds/league/" + leagueID + "/label/1";
-            var client = new RestClient(URL);
-            var request = new RestRequest(Method.GET);
-            request.AddHeader("x-rapidapi-host", "api-football-v1.p.rapidapi.com");
-            request.AddHeader("x-rapidapi-key", KeyAPI);
-            IRestResponse response = client.Execute(request);
-            string JsonStr = response.Content.ToString();
-            if (!JsonStr.StartsWith("["))
-            {
-                JsonStr = "[" + JsonStr;
-            }
-            if (!JsonStr.EndsWith("]"))
-            {
-                JsonStr = JsonStr + "]";
-            }
-            return JsonStr;
+            return API.callAPIService(URL);
         }
+
         #endregion
     }
 }

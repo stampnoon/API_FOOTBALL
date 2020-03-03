@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace Football_API.Models.Models_Odds
