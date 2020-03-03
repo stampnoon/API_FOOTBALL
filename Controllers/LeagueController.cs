@@ -14,7 +14,6 @@ namespace FootballAPI.Controllers
 
     public class LeagueController : ControllerBase
     {
-        //private string KeyAPI = APIKEY.apiKEY;
         API API = new API(); 
 
         #region ================ Public Function ================

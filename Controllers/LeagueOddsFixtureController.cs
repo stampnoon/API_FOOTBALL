@@ -16,7 +16,7 @@ namespace FootballAPI.Controllers
 
     public class OddsController : ControllerBase
     {
-        API API = new API(); 
+        API API = new API();
 
         #region ================ Public Function ================
         [HttpGet("{leagueID}")]
@@ -37,15 +37,16 @@ namespace FootballAPI.Controllers
                 ListFixture = APIJsonObjectFixture[0].api.fixtures; //Json ก้อนใหญ่มีก้อนเดียวเสมอ
             }
 
-            //Get Json object Odds
-            string JsonStr_Odds = GetOddByLeagueID(leagueID);
-            List<RootObjectOdds> APIJsonObjectOdds = JsonConvert.DeserializeObject<List<RootObjectOdds>>(JsonStr_Odds);
-            if (APIJsonObjectOdds != null)
-            {
-                ListOdds = APIJsonObjectOdds[0].api.odds; //Json ก้อนใหญ่มีก้อนเดียวเสมอ
-            }
             if (ListFixture.Count != 0)
             {
+                //Get Json object Odds
+                string JsonStr_Odds = GetOddByLeagueID(leagueID);
+                List<RootObjectOdds> APIJsonObjectOdds = JsonConvert.DeserializeObject<List<RootObjectOdds>>(JsonStr_Odds);
+                if (APIJsonObjectOdds != null)
+                {
+                    ListOdds = APIJsonObjectOdds[0].api.odds; //Json ก้อนใหญ่มีก้อนเดียวเสมอ
+                }
+
                 //====== Match FixtureID between "Fixture" & "Odds" =======
                 foreach (var eachfixture in ListFixture)
                 {
@@ -118,16 +119,16 @@ namespace FootballAPI.Controllers
                     ListFixture = APIJsonObjectFixture[0].api.fixtures; //Json ก้อนใหญ่มีก้อนเดียวเสมอ
                 }
 
-                //Get Json object Odds
-                string JsonStr_Odds = GetOddByLeagueID(leagueID);
-                List<RootObjectOdds> APIJsonObjectOdds = JsonConvert.DeserializeObject<List<RootObjectOdds>>(JsonStr_Odds);
-                if (APIJsonObjectOdds != null)
-                {
-                    ListOdds = APIJsonObjectOdds[0].api.odds; //Json ก้อนใหญ่มีก้อนเดียวเสมอ
-                }
-
                 if (ListFixture.Count != 0)
                 {
+                    //Get Json object Odds
+                    string JsonStr_Odds = GetOddByLeagueID(leagueID);
+                    List<RootObjectOdds> APIJsonObjectOdds = JsonConvert.DeserializeObject<List<RootObjectOdds>>(JsonStr_Odds);
+                    if (APIJsonObjectOdds != null)
+                    {
+                        ListOdds = APIJsonObjectOdds[0].api.odds; //Json ก้อนใหญ่มีก้อนเดียวเสมอ
+                    }
+                    
                     foreach (var eachfixture in ListFixture)
                     {
                         //หาตัวที่มี FixtureID เดียวกัน
