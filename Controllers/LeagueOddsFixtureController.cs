@@ -93,6 +93,7 @@ namespace FootballAPI.Controllers
                 {
                     LeagueID = ListLeagueFixOdds[0].LeagueID,
                     LeagueName = ListLeagueFixOdds[0].LeagueName,
+                    LeagueFlag = ListLeagueFixOdds[0].LeagueFlag,
                     LeagueOddsFixture = ListLeagueFixOdds.OrderBy(c => c.EventDate).ToList()
                 };
                 Ret_LeagureOddsFixture.Add(item2);
@@ -174,6 +175,7 @@ namespace FootballAPI.Controllers
                     {
                         LeagueID = ListLeagueFixOdds[0].LeagueID,
                         LeagueName = ListLeagueFixOdds[0].LeagueName,
+                        LeagueFlag = ListLeagueFixOdds[0].LeagueFlag,
                         LeagueOddsFixture = ListLeagueFixOdds.OrderBy(c => c.EventDate).ToList()
                     };
                     Ret_LeagureOddsFixture.Add(item2);
