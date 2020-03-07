@@ -211,10 +211,10 @@ namespace FootballAPI.Controllers
                     Ret_LeagureOddsFixture.Add(item2);
                 }
             }
-            return Ret_LeagureOddsFixture.OrderBy(c => c.LeagueName).ToList();
+            return Ret_LeagureOddsFixture.OrderBy(c => c.LeagueCountry).ToList();
         }
 
-        [HttpPost]
+        [HttpGet]
         public ActionResult<IEnumerable<List_LeagueOddsFixture>> GetOdds_SoccerAllLeague_ThisDay()
         {
             string[] Hot_League = HotLeague.HotLeagueID;
@@ -320,20 +320,18 @@ namespace FootballAPI.Controllers
                     }
                 }
             }
-            return Ret_LeagureOddsFixture.OrderBy(c => c.LeagueName).ToList();
+            return Ret_LeagureOddsFixture.OrderBy(c => c.LeagueCountry).ToList();
         }
         #endregion
 
 
         #region ================ Private Function ================
-        [HttpGet]
         private string GetFixtureByLeagueID(string leagueID, string date)
         {
             string URL = "https://api-football-v1.p.rapidapi.com/v2/fixtures/league/" + leagueID + "/" + date;
             return API.callAPIService(URL);
         }
 
-        [HttpGet]
         private string GetOddByLeagueID(string leagueID)
         {
             string URL = "https://api-football-v1.p.rapidapi.com/v2/odds/league/" + leagueID + "/label/1";
