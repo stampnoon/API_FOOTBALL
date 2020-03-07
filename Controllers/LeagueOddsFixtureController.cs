@@ -54,12 +54,26 @@ namespace FootballAPI.Controllers
                     var OddsMatch = ListOdds.FirstOrDefault(it => it.fixture.fixture_id == eachfixture.fixture_id);
                     if (OddsMatch != null)
                     {
-                        var oddHome = OddsMatch.bookmakers[0].bets[0].values.FirstOrDefault(it2 => it2.value == "Home");
-                        var oddDraw = OddsMatch.bookmakers[0].bets[0].values.FirstOrDefault(it2 => it2.value == "Draw");
-                        var oddAway = OddsMatch.bookmakers[0].bets[0].values.FirstOrDefault(it2 => it2.value == "Away");
-                        double perHome = (Convert.ToDouble(oddAway.odd) * 100) / (Convert.ToDouble(oddHome.odd) + Convert.ToDouble(oddDraw.odd) + Convert.ToDouble(oddAway.odd));
-                        double perDraw = (Convert.ToDouble(oddDraw.odd) * 100) / (Convert.ToDouble(oddHome.odd) + Convert.ToDouble(oddDraw.odd) + Convert.ToDouble(oddAway.odd));
-                        double perAway = (Convert.ToDouble(oddHome.odd) * 100) / (Convert.ToDouble(oddHome.odd) + Convert.ToDouble(oddDraw.odd) + Convert.ToDouble(oddAway.odd));
+                        double perHome = 0, perDraw = 0, perAway = 0;
+                        string OddsMaker = "";
+                        Value oddHome = new Value();
+                        Value oddDraw = new Value();
+                        Value oddAway = new Value();
+
+                        foreach (var eachOdds in OddsMatch.bookmakers)
+                        {
+                            oddHome = eachOdds.bets[0].values.FirstOrDefault(it2 => it2.value == "Home");
+                            oddDraw = eachOdds.bets[0].values.FirstOrDefault(it2 => it2.value == "Draw");
+                            oddAway = eachOdds.bets[0].values.FirstOrDefault(it2 => it2.value == "Away");
+                            if (oddHome != null && oddDraw != null && oddAway != null)
+                            {
+                                OddsMaker = eachOdds.bookmaker_name;
+                                perHome = (Convert.ToDouble(oddAway.odd) * 100) / (Convert.ToDouble(oddHome.odd) + Convert.ToDouble(oddDraw.odd) + Convert.ToDouble(oddAway.odd));
+                                perDraw = (Convert.ToDouble(oddDraw.odd) * 100) / (Convert.ToDouble(oddHome.odd) + Convert.ToDouble(oddDraw.odd) + Convert.ToDouble(oddAway.odd));
+                                perAway = (Convert.ToDouble(oddHome.odd) * 100) / (Convert.ToDouble(oddHome.odd) + Convert.ToDouble(oddDraw.odd) + Convert.ToDouble(oddAway.odd));
+                                break;
+                            }
+                        }
 
                         var item = new LeagueOddsFixture
                         {
@@ -76,7 +90,7 @@ namespace FootballAPI.Controllers
                             AwayteamName = eachfixture.awayTeam.team_name,
                             AwayteamLogo = eachfixture.awayTeam.logo,
                             AwayteamScore = eachfixture.goalsAwayTeam,
-                            OddsBookmaker = OddsMatch.bookmakers[0].bookmaker_name,
+                            OddsBookmaker = OddsMaker,
                             OddsLabal = OddsMatch.bookmakers[0].bets[0].label_name,
                             OddsHome = oddHome.odd,
                             OddsDraw = oddDraw.odd,
@@ -130,19 +144,33 @@ namespace FootballAPI.Controllers
                     {
                         ListOdds = APIJsonObjectOdds[0].api.odds; //Json ก้อนใหญ่มีก้อนเดียวเสมอ
                     }
-                    
+
                     foreach (var eachfixture in ListFixture)
                     {
                         //หาตัวที่มี FixtureID เดียวกัน
                         var OddsMatch = ListOdds.FirstOrDefault(it => it.fixture.fixture_id == eachfixture.fixture_id);
                         if (OddsMatch != null)
                         {
-                            var oddHome = OddsMatch.bookmakers[0].bets[0].values.FirstOrDefault(it2 => it2.value == "Home");
-                            var oddDraw = OddsMatch.bookmakers[0].bets[0].values.FirstOrDefault(it2 => it2.value == "Draw");
-                            var oddAway = OddsMatch.bookmakers[0].bets[0].values.FirstOrDefault(it2 => it2.value == "Away");
-                            double perHome = (Convert.ToDouble(oddAway.odd) * 100) / (Convert.ToDouble(oddHome.odd) + Convert.ToDouble(oddDraw.odd) + Convert.ToDouble(oddAway.odd));
-                            double perDraw = (Convert.ToDouble(oddDraw.odd) * 100) / (Convert.ToDouble(oddHome.odd) + Convert.ToDouble(oddDraw.odd) + Convert.ToDouble(oddAway.odd));
-                            double perAway = (Convert.ToDouble(oddHome.odd) * 100) / (Convert.ToDouble(oddHome.odd) + Convert.ToDouble(oddDraw.odd) + Convert.ToDouble(oddAway.odd));
+                            double perHome = 0, perDraw = 0, perAway = 0;
+                            string OddsMaker = "";
+                            Value oddHome = new Value();
+                            Value oddDraw = new Value();
+                            Value oddAway = new Value();
+
+                            foreach (var eachOdds in OddsMatch.bookmakers)
+                            {
+                                oddHome = eachOdds.bets[0].values.FirstOrDefault(it2 => it2.value == "Home");
+                                oddDraw = eachOdds.bets[0].values.FirstOrDefault(it2 => it2.value == "Draw");
+                                oddAway = eachOdds.bets[0].values.FirstOrDefault(it2 => it2.value == "Away");
+                                if (oddHome != null && oddDraw != null && oddAway != null)
+                                {
+                                    OddsMaker = eachOdds.bookmaker_name;
+                                    perHome = (Convert.ToDouble(oddAway.odd) * 100) / (Convert.ToDouble(oddHome.odd) + Convert.ToDouble(oddDraw.odd) + Convert.ToDouble(oddAway.odd));
+                                    perDraw = (Convert.ToDouble(oddDraw.odd) * 100) / (Convert.ToDouble(oddHome.odd) + Convert.ToDouble(oddDraw.odd) + Convert.ToDouble(oddAway.odd));
+                                    perAway = (Convert.ToDouble(oddHome.odd) * 100) / (Convert.ToDouble(oddHome.odd) + Convert.ToDouble(oddDraw.odd) + Convert.ToDouble(oddAway.odd));
+                                    break;
+                                }
+                            }
 
                             var item = new LeagueOddsFixture
                             {
@@ -159,7 +187,7 @@ namespace FootballAPI.Controllers
                                 AwayteamName = eachfixture.awayTeam.team_name,
                                 AwayteamLogo = eachfixture.awayTeam.logo,
                                 AwayteamScore = eachfixture.goalsAwayTeam,
-                                OddsBookmaker = OddsMatch.bookmakers[0].bookmaker_name,
+                                OddsBookmaker = OddsMaker,
                                 OddsLabal = OddsMatch.bookmakers[0].bets[0].label_name,
                                 OddsHome = oddHome.odd,
                                 OddsDraw = oddDraw.odd,
